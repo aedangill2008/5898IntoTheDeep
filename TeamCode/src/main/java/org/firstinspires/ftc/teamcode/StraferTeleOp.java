@@ -32,6 +32,8 @@ public class StraferTeleOp extends LinearOpMode {
         DcMotor motorBeltDrive = hardwareMap.dcMotor.get("Belt");
         Servo servoClaw = hardwareMap.servo.get("Claw");
         Servo servoWrist = hardwareMap.servo.get("Wrist");
+        double wristPos = 0.5;
+        servoWrist.setPosition(wristPos);
 
         // Reverse the right side motors
         // Reverse left motors if you are using NeveRests
@@ -39,6 +41,8 @@ public class StraferTeleOp extends LinearOpMode {
         //motorBackRight.setDirection(DcMotorSimple.Direction.REVERSE);
         motorBackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         motorFrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        motorBeltDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         waitForStart();
 
@@ -66,11 +70,11 @@ public class StraferTeleOp extends LinearOpMode {
 
             if (gamepad1.dpad_up)
             {
-                motorBeltDrive.setPower(.25);
+                motorBeltDrive.setPower(.5);
             }
             else if (gamepad1.dpad_down)
             {
-                motorBeltDrive.setPower(-.25);
+                motorBeltDrive.setPower(-.5);
             }
             else if (!gamepad1.dpad_up && !gamepad1.dpad_down)
             {
@@ -79,15 +83,27 @@ public class StraferTeleOp extends LinearOpMode {
 
             if (gamepad1.left_bumper)
             {
-                motorArmTilt.setPower(.25);
+                motorArmTilt.setPower(-.75);
             }
             else if (gamepad1.right_bumper)
             {
-                motorArmTilt.setPower(-.25);
+                motorArmTilt.setPower(.75);
             }
             else if (!gamepad1.right_bumper && !gamepad1.left_bumper){
                 motorArmTilt.setPower(0);
             }
+
+            if (gamepad1.y)
+            {
+                wristPos += .05;
+                servoWrist.setPosition(wristPos);
+            }
+            else if (gamepad1.a)
+            {
+                wristPos -= .05;
+                servoWrist.setPosition(wristPos);
+            }
+
 
         }
     }
