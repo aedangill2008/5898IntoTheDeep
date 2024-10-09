@@ -32,8 +32,11 @@ public class StraferTeleOp extends LinearOpMode {
         DcMotor motorBeltDrive = hardwareMap.dcMotor.get("Belt");
         Servo servoClaw = hardwareMap.servo.get("Claw");
         Servo servoWrist = hardwareMap.servo.get("Wrist");
-        double wristPos = 0.5;
+        double wristPos = 1.0;
         servoWrist.setPosition(wristPos);
+        sleep(1000);
+        double CLAW_CLOSE = 0.27;
+        servoClaw.setPosition(CLAW_CLOSE);//close
 
         // Reverse the right side motors
         // Reverse left motors if you are using NeveRests
@@ -95,13 +98,22 @@ public class StraferTeleOp extends LinearOpMode {
 
             if (gamepad1.y)
             {
-                wristPos += .05;
+                wristPos -= .001;
                 servoWrist.setPosition(wristPos);
             }
             else if (gamepad1.a)
             {
-                wristPos -= .05;
+                wristPos += .001;
                 servoWrist.setPosition(wristPos);
+            }
+
+            if (gamepad1.x)
+            {
+                servoClaw.setPosition(.4);//open
+            }
+            else if (gamepad1.b)
+            {
+                servoClaw.setPosition(CLAW_CLOSE);//close
             }
 
 
