@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 
 
 /**
@@ -26,6 +27,11 @@ public class StraferTeleOp extends LinearOpMode {
         DcMotor motorBackLeft = hardwareMap.dcMotor.get("RL");
         DcMotor motorFrontRight = hardwareMap.dcMotor.get("FR");
         DcMotor motorBackRight = hardwareMap.dcMotor.get("RR");
+        // These are the extra moving parts
+        DcMotor motorArmTilt = hardwareMap.dcMotor.get("Arm");
+        DcMotor motorBeltDrive = hardwareMap.dcMotor.get("Belt");
+        Servo servoClaw = hardwareMap.servo.get("Claw");
+        Servo servoWrist = hardwareMap.servo.get("Wrist");
 
         // Reverse the right side motors
         // Reverse left motors if you are using NeveRests
@@ -57,6 +63,31 @@ public class StraferTeleOp extends LinearOpMode {
             motorBackLeft.setPower(backLeftPower);
             motorFrontRight.setPower(frontRightPower);
             motorBackRight.setPower(backRightPower);
+
+            if (gamepad1.dpad_up)
+            {
+                motorBeltDrive.setPower(.25);
+            }
+            else if (gamepad1.dpad_down)
+            {
+                motorBeltDrive.setPower(-.25);
+            }
+            else if (!gamepad1.dpad_up && !gamepad1.dpad_down)
+            {
+                motorBeltDrive.setPower(0);
+            }
+
+            if (gamepad1.left_bumper)
+            {
+                motorArmTilt.setPower(.25);
+            }
+            else if (gamepad1.right_bumper)
+            {
+                motorArmTilt.setPower(-.25);
+            }
+            else if (!gamepad1.right_bumper && !gamepad1.left_bumper){
+                motorArmTilt.setPower(0);
+            }
 
         }
     }
